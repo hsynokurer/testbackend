@@ -1,0 +1,59 @@
+*1) PROJECT
+*2) DATA Requirement
+*3) DATA Requirement: 
+4) DEPLOYMENT Requirement: 
+5) ROOT URLs:
+    a)https:/your-project-name.glitch.me/ - this will be a public HTML page
+    b) The REST API root URL should start the same, but end in /states/
+    c) A catch all should be provided to serve a 404 status if the route does not exist.
+        i) If the client accepts “text/html”, the response should be an HTML page.
+        ii) If the client accepts “application/json”, the response { "error": "404 Not Found" }
+    6)GET requests:
+        */states/ All state data returned
+        */states/?contig=true All state data for contiguous states (Not AK or HI)
+        */states/?contig=false All state data for non-contiguous states (AK, HI)
+        */states/:state All data for the state URL parameter
+        */states/:state/funfact A random fun fact for the state URL parameter
+        */states/:state/capital { ‘state’: stateName, ‘capital’: capitalName }
+        */states/:state/nickname { ‘state’: stateName, ‘nickname’: nickname }
+        */states/:state/population { ‘state’: stateName, ‘population’: population }
+        */states/:state/admission { ‘state’: stateName, ‘admitted’: admissionDate }
+        GET routes:
+        *1) If you have a catch all for routes that do not exist in your server, you will not need to check if
+            URL parameters exist. If they are entered wrong, the response will be a 404.
+        *2) The :state URL parameter above represents state codes like KS, NE, TX, NY, etc. Entering in
+            full state names should result in a 404.
+        *3) Check the example application to verify the exact responses expected.
+        *4) Also check the example application for expected messages when required parameters are not
+            received or no fun facts are found for a requested state.
+        *5) Notice contig above is a query parameter where :state is a URL parameter.
+        *6) “All state data means all state data from statesData.json merged with the fun facts stored in
+            MongoDB. 
+    7)POST request
+        /states/:state/funfact - > The result received from MongoDB
+        *1) The body of this POST request should contain a “funfacts” property providing an array
+            providing one or more fun facts about the state. It should be possible to post all of your fun facts
+            about a state with one POST request.
+        *2) If the state already has some fun facts saved, submitting a POST request should add to those
+            fun facts and not delete the pre-existing data.
+        3) We are not indexing fun facts or trying to determine if they already exist. Duplicate entries in the
+            funfacts array should be avoided but are possible.
+    8)PATCH request
+        /states/:state/funfact -> The result received from MongoDB
+       * 1) The body of the PATCH submission MUST contain the index of the funfacts array element to
+            replace and the new fun fact. Required request body properties: index and funfact
+        *2) The index parameter value should not be zero-based. This will allow you to check if the index is
+            sent: if (!index)
+     9)DELETE request   
+        /states/:state/funfact -> The result received from MongoDB
+        *1) The body of the DELETE submission MUST contain the index of the funfacts array element to
+            remove. Required request body property: index
+        *2) The index parameter value should not be zero-based. This will allow you to check if the index is
+            sent: if (!index) etc. …afterwards, you should subtract 1 to adjust for the data array which is
+            zero-based.
+    *10) Your project should have a GitHub repository.
+    11) Submit the following:
+        a) A link to your GitHub code repository (no code updates after the due date accepted)
+        b) A link to your deployed project
+        c) A one page PDF document discussing what challenges you faced while building your project.
+        d) Automated testing - remember to not only run the tests but also submit your score.
