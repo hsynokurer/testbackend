@@ -266,12 +266,10 @@ app.patch("/states/:state/funfact", async (req, res) => {
             if (zeroBasedIndex >= 0 && zeroBasedIndex < funfacts.length) {
               funfacts[zeroBasedIndex] = funfact;
             } else {
-              return res
-                .status(400)
-                .send({
-                  message:
-                    "No Fun Fact found at that index for " + stateInfo.state,
-                });
+              return res.status(400).send({
+                message:
+                  "No Fun Fact found at that index for " + stateInfo.state,
+              });
             }
 
             // Save the updated state document to the database
@@ -318,11 +316,9 @@ app.delete("/states/:state/funfact", cors(), async (req, res) => {
           const updatedState = await stateData.save();
           res.status(200).send(updatedState);
         } else {
-          return res
-            .status(400)
-            .json({
-              message: "No Fun Fact found at that index for " + stateInfo.state,
-            });
+          return res.status(400).json({
+            message: "No Fun Fact found at that index for " + stateInfo.state,
+          });
         }
       }
     } else {
